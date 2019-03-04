@@ -39,6 +39,10 @@ app.get('/templates/productDetails.html', function(req, res) {
     res.sendFile(path.join(__dirname+"/templates/productDetails.html"));
 });
 
+app.get('/templates/product.html', function(req, res) {
+    res.sendFile(path.join(__dirname+"/templates/product.html"));
+});
+
 app.get('/', function(req, res){
     res.sendFile(path.join(__dirname+'/index.html'));
 });

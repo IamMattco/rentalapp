@@ -12,7 +12,7 @@
         </form>
     </div>
     <div class="col-lg-9">
-        <ul class="products-list">
+        <ul ng-if="is_admin === true" class="products-list">
             <li ng-repeat="product in products" ng-class="{'leased': product.leased === true}">
                 <a href="/#!/products/{{product.id}}"><h4>{{product.name}}</h4></a>
                 <p>
@@ -27,5 +27,8 @@
                 </p>
             </li>
         </ul>
+        <div class="hero" ng-if="is_admin === false">
+            Musisz być zalogowany, by zobaczyć listę produktów.
+        </div>
     </div>
 </div>

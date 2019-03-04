@@ -388,7 +388,6 @@ App.directive("rentLogin", function ($filter, $location, Ajax, $sce) {
         restrict: "E",
         link: function ($scope, element, attrs) {
             $scope.loginUser = function($event) {
-                console.log($scope.loginForm.$valid);
 
                 if ($scope.loginForm.$valid === true) {
                     console.log($scope.user);
@@ -442,6 +441,58 @@ App.directive("rentLogin", function ($filter, $location, Ajax, $sce) {
 
     }
 });
+
+App.directive("rentSignup", function($filter, $location, Ajax, $sce) {
+    return {
+        restrict: "E",
+        link: function( $scope, element, attr) {
+            $scope.registerUser = function($event) {
+
+                Ajax.post({
+                    url: "/users/register",
+                    data: "name=" + $scope.user.name + "&email=" + $scope.user.email + "&password=" + $scope.user.password,
+                    success: function(response) {
+                    
+                        $("#registerModal").modal("hide");
+
+                        notify("Uytkownik utworzony!", "success");
+                    }
+                });
+
+                $event.preventDefault();
+            }
+        },
+        template: '<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">' +
+            '<div class="modal-dialog" role="document">' +
+                '<div class="modal-content">' +
+                    '<div class="modal-header">' +
+                        '<h5 class="modal-title" id="registerModalLabel">Rejestracja</h5>' +
+                        '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                        '<span aria-hidden="true">&times;</span>' +
+                        '</button>' +
+                    '</div>' +
+                    '<div class="modal-body">' +
+                    '<form name="regForm">' +
+                    '<div class="form-group">' +
+                        '<label for="name">Name</label>' +
+                        '<input type="email" class="form-control" ng-model="user.name" id="name" aria-describedby="emailHelp" placeholder="Name">' +
+                    '</div>' +
+                        '<div class="form-group">' +
+                            '<label for="exampleInputEmail1">Email address</label>' +
+                            '<input type="email" class="form-control" ng-model="user.email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" >' +
+                        '</div>' +
+                        '<div class="form-group">' +
+                            '<label for="exampleInputPassword1">Password</label>' +
+                            '<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" ng-model="user.password">' +
+                        '</div>' +
+                        '<button type="submit" class="btn btn-primary" ng-click="registerUser($event)">Submit</button>' +
+                    '</form>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+        '</div>'
+    }
+})
 
 App.config(function ($routeProvider, $httpProvider, $locationProvider, $provide) {
 
@@ -534,8 +585,25 @@ App.controller("productsController", function($scope, $http) {
     }
 });
 
-App.controller("productController", function($scope) {
+App.controller("productController", function($scope, $routeParams, $http) {
 
+    if (sessionStorage.getItem("token") !== null) {
+        $scope.is_admin = true;
+    } else {
+        $scope.is_admin = false;
+    }
+
+    $http({
+        url: "/products/" + $routeParams.id,
+        method: "GET",
+        headers: {
+            "x-access-token": sessionStorage.getItem("token"),
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    }).then(function (response) {
+        $scope.product = response.data.data.products;
+        console.log($scope.product);
+    });
 });
 
 App.controller("productDetailsController", function($scope, $routeParams, $http) {
