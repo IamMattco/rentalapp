@@ -1,0 +1,24 @@
+.page {
+    padding: 30px;
+}
+
+.search {
+    margin-bottom: 20px;
+}
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+.products-list li {
+    display: block;
+    width: 100%;
+    float: left;
+    padding: 20px;
+    background-color: #f1f1f1;
+    margin: 0 0 20px 0;
+}

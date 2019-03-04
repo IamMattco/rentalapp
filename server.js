@@ -1,11 +1,12 @@
 const express = require('express');
 const logger = require('morgan');
-const movies = require('./routes/movies') ;
+const products = require('./routes/products') ;
 const users = require('./routes/users');
 const bodyParser = require('body-parser');
 const mongoose = require('./config/database'); 
 var jwt = require('jsonwebtoken');
 const app = express();
+const path = require('path');
 
 app.set('secretKey', 'nodeRestApi');
 
@@ -14,8 +15,32 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 
+/*
+    Assets
+*/
+
+app.get('/styles.css', function(req, res) {
+    res.sendFile(path.join(__dirname+"/assets/css/styles.css"));
+});
+
+app.get('/app.js', function(req, res) {
+    res.sendFile(path.join(__dirname+"/assets/js/app.js"));
+});
+
+app.get('/templates/home.html', function(req, res) {
+    res.sendFile(path.join(__dirname+"/templates/home.html"));
+});
+
+app.get('/templates/products.html', function(req, res) {
+    res.sendFile(path.join(__dirname+"/templates/products.html"));
+});
+
+app.get('/templates/productDetails.html', function(req, res) {
+    res.sendFile(path.join(__dirname+"/templates/productDetails.html"));
+});
+
 app.get('/', function(req, res){
-    res.json({"message" : "Rental APP"});
+    res.sendFile(path.join(__dirname+'/index.html'));
 });
 
 app.use('/users', users);

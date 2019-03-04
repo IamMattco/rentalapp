@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1>{{pageTitle}}</h1>
+    </div>
+</div>
+<form name="productDetails" class="form-horizontal"></form>
+    <div class="row">
+    
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label for="">Nazwa*</label>
+                <input type="text" class="form-control" ng-model="product.name" required>
+            </div>
+            <div class="form-group">
+                <label for="">Cena*</label>
+                <input type="number" min="0" class="form-control" ng-model="product.price" required>
+            </div>
+            <div class="form-group">
+                <label for="">CPU</label>
+                <input type="text" class="form-control" ng-model="product.cpu">
+            </div>
+            <div class="form-group">
+                <label for="">GPU</label>
+                <input type="text" class="form-control" ng-model="product.gpu">
+            </div>
+            <div class="form-group">
+                <label for="">Ilość</label>
+                <input type="number" min="0" class="form-control" ng-model="product.quantities">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label for="">Opis</label>
+                <textarea class="form-control" ng-model="product.description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="">W leasingu?</label>
+                <input type="checkbox" ng-model="product.leased">
+            </div>
+        </div>
+
+        <a href="#" class="btn btn-primary" ng-click="saveItem($event)">Zapisz</a>
+    
+    </div>
+</form>

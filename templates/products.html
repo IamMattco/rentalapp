@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1><span class="pull-left">Lista produktów</span> <a ng-if="is_admin === true" href="/#!/product_details/0" class="btn btn-primary pull-right">Nowy produkt</a></h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-3">
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control search" type="search" placeholder="Search" aria-label="Search" ng-model="search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" ng-click="searchForm($event)">Search</button>
+        </form>
+    </div>
+    <div class="col-lg-9">
+        <ul class="products-list">
+            <li ng-repeat="product in products" ng-class="{'leased': product.leased === true}">
+                <a href="/#!/products/{{product.id}}"><h4>{{product.name}}</h4></a>
+                <p>
+                    CPU: {{product.cpu}} | GPU: {{product.gpu}}
+                </p>
+                <p>
+                    OPIS: {{product.description}}
+                </p>
+                <p ng-if="is_admin === true">
+                    <a href="#" class="btn btn-danger btn-sm" ng-click="deleteProduct($event, product.id)">Usuń</a>
+                    <a href="#" class="btn btn-default btn-sm" ng-click="editProduct($event, product.id)">Edycja</a>
+                </p>
+            </li>
+        </ul>
+    </div>
+</div>
