@@ -1,14 +1,20 @@
 const leasingModel = require('../models/leasing');
 module.exports = {
     getAll: function(req, res, next) {
-    var query = req.query.query;
+    var query = req.query.productid;
     let leasingList = [];
     leasingModel.find({}, function(err, leasing){
         if (err){
         next(err);
         } else{
         for (let les of leasing) {
-            leasingList.push({id: les._id, user_id: les.user_id, product_id: les.product_id, rent_from: les.rent_from, rent_to: les.rent_to});
+            if (query !== undefined && query.length > 0) {
+                if (les.product_id === query) {
+                  leasingList.push({id: les._id, user_id: les.user_id, product_id: les.product_id, rent_from: les.rent_from, rent_to: les.rent_to});
+                }
+              } else {
+                leasingList.push({id: les._id, user_id: les.user_id, product_id: les.product_id, rent_from: les.rent_from, rent_to: les.rent_to});
+              }
         }
         res.json({status:"success", message: "History list found!!!", data:{leasing: leasingList}});
             

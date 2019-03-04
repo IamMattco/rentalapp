@@ -7,7 +7,7 @@ const LeasingSchema = new Schema({
         type: String
     },
     product_id: {
-        type: Number,
+        type: String,
     },
     rent_from: { type: Date },
     rent_to: { type: Date }

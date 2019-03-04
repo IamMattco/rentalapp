@@ -53,7 +53,7 @@ app.get('/', function(req, res){
 app.use('/users', users);
 
 app.use('/products', validateUser, products);
-app.use('/products', validateUser, leasing);
+app.use('/leasing', validateUser, leasing);
 app.get('/favicon.ico', function(req, res) {
     res.sendStatus(204);
 });

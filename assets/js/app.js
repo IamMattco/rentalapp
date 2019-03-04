@@ -396,6 +396,8 @@ App.directive("rentLogin", function ($filter, $location, Ajax, $sce) {
                         data: "email=" + $scope.user.email + "&password=" + $scope.user.password,
                         success: function(response) {
                             sessionStorage.setItem("token", response.data.data.token);
+                            sessionStorage.setItem("id", response.data.data.user._id);
+                            sessionStorage.setItem("uname", response.data.data.user.name);
 
                             document.getElementById("loginLink").style.display = "none";
                             document.getElementById("registerLink").style.display = "none";
@@ -604,6 +606,41 @@ App.controller("productController", function($scope, $routeParams, $http) {
         $scope.product = response.data.data.products;
         console.log($scope.product);
     });
+
+    $http({
+        url: "/leasing?productid" + $routeParams.id,
+        method: "GET",
+        headers: {
+            "x-access-token": sessionStorage.getItem("token"),
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    }).then(function (response) {
+        $scope.history = response.data.data.leasing;
+        console.log($scope.history);
+    });
+
+    $scope.leasingSave = function($event) {
+        if ($scope.leasingDetails.$valid === true) {
+            $http({
+                url: "/leasing",
+                method: "POST",
+                data: "user_id=" + sessionStorage.getItem("uname") + "&product_id=" + $routeParams.id + "&rent_from=" + $scope.leasing.rent_from + "&rent_to=" + $scope.leasing.rent_to,
+                headers: {
+                    "x-access-token": sessionStorage.getItem("token"),
+                    "Content-Type": "application/x-www-form-urlencoded"
+                }
+            }).then(function (response) {
+                notify("Leasing zapisany", "success");
+                window.location.reload();
+            }, function (response) {
+                notify(response.data.Message);
+            });
+        } else {
+            notify("Proszę uzupełnić wszystkie wymagane pola");
+        }
+
+        $event.preventDefault();
+    }
 });
 
 App.controller("productDetailsController", function($scope, $routeParams, $http) {

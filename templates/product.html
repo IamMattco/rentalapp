@@ -2,9 +2,6 @@
     <div class="col-lg-12">
         <h1>
             {{product.name}}
-            <div class="pull-right">
-                <a href="#" class="btn btn-secondary btn-xs">Weź w leasing</a>
-            </div>
         </h1>
     </div>
 </div>
@@ -14,5 +11,48 @@
         <p>CPU: {{product.cpu}} | GPU: {{product.gpu}}</p>
         <p><button class="btn btn-primary btn-xs">{{product.price}} zł</button></p>
         <p>Opis: {{product.description}}</p>
+    </div>
+
+    <div class="hero">
+        <h3>Historia produktu</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Kto</th>
+                    <th>Od kiedy</th>
+                    <th>Do kiedy</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="h in history">
+                    <td>{{h.user_id}}</td>
+                    <td>{{h.rent_from | date : format : timezone}}</td>
+                    <td>{{h.rent_to | date : format : timezone}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="hero">
+        <h3>Weź w leasing</h3>
+        <form name="leasingDetails" class="leasing">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="">Od</label>
+                        <input type="date" ng-model="leasing.rent_from" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="">Do</label>
+                        <input type="date" ng-model="leasing.rent_to" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <a href="#" ng-click="leasingSave($event)" class="btn btn-secondary btn-small">Weź w leasing</a>
+            </div>
+        </form>
     </div>
 </div>
