@@ -1,7 +1,10 @@
 const express = require('express');
 const logger = require('morgan');
+
 const products = require('./routes/products') ;
 const users = require('./routes/users');
+const leasing = require('./routes/leasing') ;
+
 const bodyParser = require('body-parser');
 const mongoose = require('./config/database'); 
 var jwt = require('jsonwebtoken');
@@ -50,6 +53,7 @@ app.get('/', function(req, res){
 app.use('/users', users);
 
 app.use('/products', validateUser, products);
+app.use('/products', validateUser, leasing);
 app.get('/favicon.ico', function(req, res) {
     res.sendStatus(204);
 });
