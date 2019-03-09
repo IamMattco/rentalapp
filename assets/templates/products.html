@@ -16,7 +16,7 @@
             <li ng-repeat="product in products" ng-class="{'leased': product.leased === true}">
                 <a href="/#!/products/{{product.id}}"><h4>{{product.name}}</h4></a>
                 <p>
-                    CPU: {{product.cpu}} | GPU: {{product.gpu}}
+                    CPU: {{product.cpu}} | GPU: {{product.gpu}} | Cena: {{product.price}}
                 </p>
                 <p>
                     OPIS: {{product.description}}
