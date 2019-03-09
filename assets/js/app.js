@@ -670,7 +670,7 @@ App.controller("productController", function($scope, $routeParams, $http) {
     });
 
     $scope.leasingSave = function($event) {
-        if ($scope.leasingDetails.$valid === true) {
+        if (document.getElementById("leasingFrom").value.length > 0 && document.getElementById("leasingTo").value.length > 0) {
             $http({
                 url: "/leasing",
                 method: "POST",
@@ -691,6 +691,49 @@ App.controller("productController", function($scope, $routeParams, $http) {
 
         $event.preventDefault();
     }
+
+    angular.element(document).ready(function() {
+
+        document.getElementById("leasingFrom").onchange = function() {
+            var thisValue = document.getElementById("leasingFrom").value,
+            inputToValue = document.getElementById("leasingTo").value;
+
+            var dateFrom = new Date(thisValue);
+            if (inputToValue.length > 0) {
+                dateTo = new Date(inputToValue);
+
+                if (dateFrom < dateTo) {
+
+                } else {
+                    document.getElementById("leasingFrom").value = "";
+                }
+            } else {
+                dateTo = new Date();
+            }
+        }
+
+        document.getElementById("leasingTo").onchange = function() {
+            var thisValue = document.getElementById("leasingTo").value,
+            inputFromValue = document.getElementById("leasingFrom").value;
+
+            var dateTo = new Date(thisValue);
+            if (inputFromValue.length > 0) {
+                dateFrom = new Date(inputFromValue);
+            } else {
+                dateFrom = new Date();
+            }
+            
+            console.log(dateFrom);
+            console.log(dateTo);
+
+            if (dateTo > dateFrom) {
+
+            } else {
+                document.getElementById("leasingTo").value = "";
+            }
+        }
+
+    });
 });
 
 App.controller("productDetailsController", function($scope, $routeParams, $http) {
