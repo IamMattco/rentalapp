@@ -383,6 +383,54 @@ App.service("Ajax", function ($http, $route, $q) {
 
 });
 
+App.directive("toolbar", function($filter, $location, Ajax, $sce) {
+    return {
+        restrict: "E",
+        link: function($scope, element, attr) {
+            $scope.logout = function($event) {
+                document.getElementById("loginLink").style.display = "block";
+                document.getElementById("registerLink").style.display = "block";
+                document.getElementById("logoutLink").style.display = "none";
+
+                window.location.href = "/#!/";
+
+                sessionStorage.clear();
+
+                window.location.reload();
+
+                $event.preventDefault();
+            }
+        },
+        template: '<nav class="navbar navbar-expand-lg navbar-light bg-light">' +
+            '<a class="navbar-brand" href="#">Lease PC</a>'+
+            '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">'+
+                '<span class="navbar-toggler-icon"></span>'+
+            '</button>'+
+            '<div class="collapse navbar-collapse" id="navbarSupportedContent">'+
+                '<ul class="navbar-nav mr-auto">'+
+                    '<li class="nav-item">'+
+                        '<a class="nav-link" href="/#!/">Strona główna <span class="sr-only">(current)</span></a>'+
+                    '</li>'+
+                    '<li class="nav-item">'+
+                        '<a class="nav-link" href="/#!/products">Produkty</a>'+
+                    '</li>'+
+                '</ul>'+
+                '<ul class="navbar-nav">'+
+                    '<li id="loginLink" class="nav-item">'+
+                        '<a href="#" class="nav-link" data-toggle="modal" data-target="#loginModal">Logowanie</a>'+
+                    '</li>'+
+                    '<li id="registerLink" class="nav-item">'+
+                        '<a href="#" class="nav-link" data-toggle="modal" data-target="#registerModal">Rejestracja</a>'+
+                    '</li>'+
+                    '<li id="logoutLink" class="nav-item" style="display: none">'+
+                        '<a href="#" class="nav-link" ng-click="logout($event)">Wyloguj się</a>'+
+                    '</li>'+
+                '</ul>'+
+            '</div>'+
+        '</nav>'
+    }
+})
+
 App.directive("rentLogin", function ($filter, $location, Ajax, $sce) {
     return {
         restrict: "E",
@@ -397,7 +445,7 @@ App.directive("rentLogin", function ($filter, $location, Ajax, $sce) {
                         success: function(response) {
                             sessionStorage.setItem("token", response.data.data.token);
                             sessionStorage.setItem("id", response.data.data.user._id);
-                            sessionStorage.setItem("uname", response.data.data.user.name);
+                            sessionStorage.setItem("uname", response.data.data.user.email);
 
                             document.getElementById("loginLink").style.display = "none";
                             document.getElementById("registerLink").style.display = "none";
@@ -457,7 +505,7 @@ App.directive("rentSignup", function($filter, $location, Ajax, $sce) {
                     
                         $("#registerModal").modal("hide");
 
-                        notify("Uytkownik utworzony!", "success");
+                        notify("Uzytkownik utworzony!", "success");
                     }
                 });
 
@@ -494,7 +542,7 @@ App.directive("rentSignup", function($filter, $location, Ajax, $sce) {
             '</div>' +
         '</div>'
     }
-})
+});
 
 App.config(function ($routeProvider, $httpProvider, $locationProvider, $provide) {
 
@@ -553,7 +601,9 @@ App.controller("productsController", function($scope, $http) {
         });
     }
 
-    $scope.loadData();
+    if ($scope.is_admin === true) {
+        $scope.loadData();
+    }
 
     $scope.deleteProduct = function($event, id) {
         if (confirm("Czy chcesz usunąć produkt z bazy danych?")) {
@@ -608,7 +658,7 @@ App.controller("productController", function($scope, $routeParams, $http) {
     });
 
     $http({
-        url: "/leasing?productid" + $routeParams.id,
+        url: "/leasing?productid=" + $routeParams.id,
         method: "GET",
         headers: {
             "x-access-token": sessionStorage.getItem("token"),
@@ -659,7 +709,6 @@ App.controller("productDetailsController", function($scope, $routeParams, $http)
             }
         }).then(function (response) {
             $scope.product = response.data.data.products;
-            console.log($scope.product);
         });
     }
 
@@ -673,7 +722,10 @@ App.controller("productDetailsController", function($scope, $routeParams, $http)
                 _method = "PUT";
         }
         
-        if ($scope.productDetails.$valid === true) {
+        console.log($scope);
+        console.log($scope.productFormDetails);
+
+        if (document.getElementById("productName").value.length > 0 && document.getElementById("productPrice").value.length > 0 && document.getElementById("productCounter").value.length > 0) {
             $http({
                 url: _url,
                 method: _method,
@@ -702,17 +754,5 @@ window.onload = function() {
         document.getElementById("loginLink").style.display = "none";
         document.getElementById("registerLink").style.display = "none";
         document.getElementById("logoutLink").style.display = "block";
-
-        document.getElementById("logoutLink").addEventListener("click", function(e) {
-            document.getElementById("loginLink").style.display = "block";
-            document.getElementById("registerLink").style.display = "block";
-            document.getElementById("logoutLink").style.display = "none";
-
-            sessionStorage.clear();
-
-            window.location.reload();
-
-            e.preventDefault();
-        });
     }
 }

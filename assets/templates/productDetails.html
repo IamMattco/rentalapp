@@ -3,17 +3,16 @@
         <h1>{{pageTitle}}</h1>
     </div>
 </div>
-<form name="productDetails" class="form-horizontal"></form>
+<form name="productFormDetails" class="form-horizontal"></form>
     <div class="row">
-    
         <div class="col-lg-6">
             <div class="form-group">
                 <label for="">Nazwa*</label>
-                <input type="text" class="form-control" ng-model="product.name" required>
+                <input type="text" class="form-control" id="productName" name="productName" ng-model="product.name" required>
             </div>
             <div class="form-group">
                 <label for="">Cena*</label>
-                <input type="number" min="0" class="form-control" ng-model="product.price" required>
+                <input type="number" id="productPrice" min="0" class="form-control" ng-model="product.price" required>
             </div>
             <div class="form-group">
                 <label for="">CPU</label>
@@ -24,8 +23,8 @@
                 <input type="text" class="form-control" ng-model="product.gpu">
             </div>
             <div class="form-group">
-                <label for="">Ilość</label>
-                <input type="number" min="0" class="form-control" ng-model="product.quantities">
+                <label for="">Ilość*</label>
+                <input type="number" id="productCounter" min="0" class="form-control" ng-model="product.quantities">
             </div>
         </div>
         <div class="col-lg-6">

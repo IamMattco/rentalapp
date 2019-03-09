@@ -18,33 +18,11 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 
+app.use(express.static('assets'));
+
 /*
     Assets
 */
-
-app.get('/styles.css', function(req, res) {
-    res.sendFile(path.join(__dirname+"/assets/css/styles.css"));
-});
-
-app.get('/app.js', function(req, res) {
-    res.sendFile(path.join(__dirname+"/assets/js/app.js"));
-});
-
-app.get('/templates/home.html', function(req, res) {
-    res.sendFile(path.join(__dirname+"/templates/home.html"));
-});
-
-app.get('/templates/products.html', function(req, res) {
-    res.sendFile(path.join(__dirname+"/templates/products.html"));
-});
-
-app.get('/templates/productDetails.html', function(req, res) {
-    res.sendFile(path.join(__dirname+"/templates/productDetails.html"));
-});
-
-app.get('/templates/product.html', function(req, res) {
-    res.sendFile(path.join(__dirname+"/templates/product.html"));
-});
 
 app.get('/', function(req, res){
     res.sendFile(path.join(__dirname+'/index.html'));
