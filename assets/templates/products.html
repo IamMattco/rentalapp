@@ -5,7 +5,7 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-3">
+    <div class="col-lg-3" ng-if="is_admin === true">
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control search" type="search" placeholder="Search" aria-label="Search" ng-model="search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit" ng-click="searchForm($event)">Search</button>
