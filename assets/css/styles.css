@@ -31,3 +31,9 @@
     background-color: #f1f1f1;
     margin: 20px 0;
 }
+
+.alert {
+    position: fixed !important;
+    z-index: 2000 !important;
+    width: 100%;
+}

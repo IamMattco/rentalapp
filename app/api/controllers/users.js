@@ -14,6 +14,7 @@ module.exports = {
     authenticate: function(req, res, next) {
         userModel.findOne({email:req.body.email}, function(err, userInfo){
             if (err) {
+                console.log(err);
                 next(err);
             } else {
                 if(bcrypt.compareSync(req.body.password, userInfo.password)) {

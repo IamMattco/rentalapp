@@ -71,7 +71,6 @@ App.service("Ajax", function ($http, $route, $q) {
                 if (activeRequests === 0) {
                     clearTimeout(activeRequestsLoader);
                     activeRequestsLoader = null;
-                    document.querySelector("#main").classList.remove("loading-view");
                 }
             }
         }).then(function (response) {
@@ -96,7 +95,6 @@ App.service("Ajax", function ($http, $route, $q) {
             if (activeRequests === 0) {
                 clearTimeout(activeRequestsLoader);
                 activeRequestsLoader = null;
-                document.querySelector("#main").classList.remove("loading-view");
             }
         });
     };
@@ -144,14 +142,7 @@ App.service("Ajax", function ($http, $route, $q) {
             }
         }, function (response) {
             // error handling            
-            if (response.data.Message) { notification(response.data.Message, "fail"); } else { notification(response.data.ExceptionMessage, "fail"); };
-            activeRequests -= 1;
-
-            if (activeRequests === 0) {
-                clearTimeout(activeRequestsLoader);
-                activeRequestsLoader = null;
-                document.querySelector("#main").classList.remove("loading-view");
-            }
+            notify("Nieprawidłowe dane!");
         });
     };
 
@@ -203,14 +194,7 @@ App.service("Ajax", function ($http, $route, $q) {
             }
         }, function (response) {
             // error handling
-            if (response.data.Message) { notification(response.data.Message, "fail"); } else { notification(response.data.ExceptionMessage, "fail"); };
-            activeRequests -= 1;
-
-            if (activeRequests === 0) {
-                clearTimeout(activeRequestsLoader);
-                activeRequestsLoader = null;
-                document.querySelector("#main").classList.remove("loading-view");
-            }
+            notify("Nieprawidłowe dane!");
         });
     }
 
@@ -274,14 +258,7 @@ App.service("Ajax", function ($http, $route, $q) {
             }
         }, function (response) {
             // error handling
-            if (response.data.Message) { notification(response.data.Message, "fail"); } else { notification(response.data.ExceptionMessage, "fail"); };
-            activeRequests -= 1;
-
-            if (activeRequests === 0) {
-                clearTimeout(activeRequestsLoader);
-                activeRequestsLoader = null;
-                document.querySelector("#main").classList.remove("loading-view");
-            }
+            notify("Nieprawidłowe dane!");
         });
     }
 
@@ -368,8 +345,7 @@ App.service("Ajax", function ($http, $route, $q) {
             }
         }, function (response) {
             // error handling
-            if (response.data.Message) { notification(response.data.Message, "fail"); } else { notification(response.data.ExceptionMessage, "fail"); };
-
+            notify("Nieprawidłowe dane!");
         });
     }
 
@@ -438,7 +414,6 @@ App.directive("rentLogin", function ($filter, $location, Ajax, $sce) {
             $scope.loginUser = function($event) {
 
                 if ($scope.loginForm.$valid === true) {
-                    console.log($scope.user);
                     Ajax.post({
                         url: "/users/authenticate",
                         data: "email=" + $scope.user.email + "&password=" + $scope.user.password,
@@ -584,7 +559,6 @@ App.controller("productsController", function($scope, $http) {
     }
 
     $scope.loadData = function(query) {
-        console.log(query);
         var _path = "/products";
 
         if (query !== undefined) {
@@ -657,7 +631,6 @@ App.controller("productController", function($scope, $routeParams, $http) {
         }
     }).then(function (response) {
         $scope.product = response.data.data.products;
-        console.log($scope.product);
     });
 
     $http({
@@ -669,7 +642,6 @@ App.controller("productController", function($scope, $routeParams, $http) {
         }
     }).then(function (response) {
         $scope.history = response.data.data.leasing;
-        console.log($scope.history);
     });
 
     $scope.leasingSave = function($event) {
@@ -725,9 +697,6 @@ App.controller("productController", function($scope, $routeParams, $http) {
             } else {
                 dateFrom = new Date();
             }
-            
-            console.log(dateFrom);
-            console.log(dateTo);
 
             if (dateTo > dateFrom) {
 
@@ -768,9 +737,6 @@ App.controller("productDetailsController", function($scope, $routeParams, $http)
                 _method = "PUT";
         }
         
-        console.log($scope);
-        console.log($scope.productFormDetails);
-
         if (document.getElementById("productName").value.length > 0 && document.getElementById("productPrice").value.length > 0 && document.getElementById("productCounter").value.length > 0) {
             $http({
                 url: _url,
