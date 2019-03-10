@@ -453,7 +453,9 @@ App.directive("rentLogin", function ($filter, $location, Ajax, $sce) {
 
                             $("#loginModal").modal("hide");
 
-                            notify("Uytkownik zalogowany!", "success");
+                            notify("Uzytkownik zalogowany!", "success");
+
+                            window.location.reload();
                         }
                     });
                 } else {
@@ -582,7 +584,7 @@ App.controller("productsController", function($scope, $http) {
     }
 
     $scope.loadData = function(query) {
-
+        console.log(query);
         var _path = "/products";
 
         if (query !== undefined) {
@@ -631,7 +633,8 @@ App.controller("productsController", function($scope, $http) {
     }
 
     $scope.searchForm = function($event, id) {
-        $scope.loadData($scope.search);
+        var _value = document.getElementById("searchField").value;
+        $scope.loadData(_value);
 
         $event.preventDefault();
     }
